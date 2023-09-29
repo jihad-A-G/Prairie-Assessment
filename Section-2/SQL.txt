@@ -1,0 +1,108 @@
+3.
+Cohort Table:
+
+CREATE TABLE "Cohort" (
+	"cohort_ID"	INTEGER NOT NULL,
+	"number"	INTEGER NOT NULL,
+	"start_date"	Date NOT NULL,
+	"end_date"	Date NOT NULL,
+	PRIMARY KEY("cohort_ID" AUTOINCREMENT)
+);
+
+Department Table:
+
+CREATE TABLE "Department" (
+	"department_ID"	INTEGER NOT NULL,
+	"name"	VARCHAR(255) NOT NULL,
+	"office" VARCHAR(255) NOT NULL,
+	"topic_speciality"	VARCHAR(255) NOT NULL,
+	PRIMARY KEY("department_ID" AUTOINCREMENT)
+);
+
+Mentor Table:
+
+CREATE TABLE "Mentor" (
+	"SSN"	VARCHAR(255) NOT NULL,
+	"firstName"	VARCHAR(255) NOT NULL,
+	"LastName" VARCHAR(255) NOT NULL,
+	"DOB" VARCHAR(255) NOT NULL,
+	"seniority_Level" VARCHAR(255) NOT NULL,
+	"office" VARCHAR(255) NOT NULL,
+    "salary" INTEGER NOY NULL,
+	"topic_speciality"	VARCHAR(255) NOT NULL,
+    "department_ID" INTEGER NOT NULL,
+	PRIMARY KEY("SSN")
+    FOREIGN KEY "department_ID" REFERENCES Department("department_ID")
+);
+
+Student Table:
+
+CREATE TABLE "Student" (
+	"SSN"	VARCHAR(255) NOT NULL,
+	"student_no" INTEGER NOT NULL,
+	"firstName"	VARCHAR(255) NOT NULL,
+	"LastName" VARCHAR(255) NOT NULL,
+	"DOB" VARCHAR(255) NOT NULL,
+    "cohort_ID" INTEGER NOT NULL,
+	PRIMARY KEY("SSN"),
+    FOREIGN KEY "cohort_ID" REFERENCES Cohort("cohort_ID")
+);
+
+Topics Table:
+
+CREATE TABLE "topics" (
+	"topic_ID" INTEGER NOT NULL,
+	"name"	VARCHAR(255) NOT NULL,
+	"description" VARCHAR(255) NOT NULL,
+	"mentor_ID" VARCHAR(255) NOT NULL,
+    "cohort_ID" INTEGER NOT NULL,
+	PRIMARY KEY("topic_ID"),
+    FOREIGN KEY "cohort_ID" REFERENCES Cohort("cohort_ID),
+    FOREIGN KEY "mentor_ID: REFERENCES Mentor("SSN"),
+);
+
+Skills table:
+
+CREATE TABLE "skills" (
+	"skill_ID" INTEGER NOT NULL,
+	"name"	VARCHAR(255) NOT NULL,
+    PRIMARY KEY("skill_ID"),
+);
+
+Student_Skill pivot table:
+
+CREATE TABLE "student_skills" (
+	"ID" INTEGER NOT NULL,
+	"student_ID" VARCHAR(255) NOT NULL,
+    "skill_ID" INTEGER NOT NULL,
+	PRIMARY KEY("ID"),
+    FOREIGN KEY "student_ID" REFERENCES Cohort("SSN"),
+    FOREIGN KEY "skill_ID: REFERENCES Mentor("skill_ID"),
+);
+
+//////////////////////////////////////////////////////////////////////
+INSERT
+
+insert into Cohort (cohort_ID,number,start_date,end_date)
+ values (1,1,1/1/2000,1/7/2000),
+ (2,2,1/1/2001,1/7/2001),(3,3,1/1/2002,1/7/2002),
+ (4,4,1/1/2003,1/7/2003);
+
+insert into Department (department_ID,name,office,topic_speciality)
+ values (1,'IT','Beirut',"IT"),
+ (2,'Finance','Beirut',"Business"),(3,'Tech','Beirut',"WEB"),
+ (4,"IDK",'Beirut',"IDK");
+
+SAME FOR ALL.
+////////////////////////////////////////////////////////////////
+QUERIES:
+
+1. select Count(*),firstName, LastName form Mentor;
+2.select * from Mentor where office= "333";
+3.select * from Mentor where salary> "1000";
+4.select Count(*),firstName,LastName from Mentor where salary> "1000";
+5.select firstName,LastName from Mentor where department_ID= (select department_ID from Department where name="English & Life Skills");
+6. select Count (*) from Student where SSN=(select student_ID from Student_Skill where skill_ID=(select skill_ID form Skills where name="Development));
+6. select SSN from Student where SSn=(select student_ID from Student_Skill where skill_ID=(select skill_ID form Skills where name="Development));
+
+
